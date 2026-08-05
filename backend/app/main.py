@@ -33,6 +33,13 @@ app.include_router(inventory.router, prefix=settings.API_V1_STR)
 app.include_router(reports.router, prefix=settings.API_V1_STR)
 app.include_router(dashboard.router, prefix=settings.API_V1_STR)
 
+# Health check endpoint for UptimeRobot / monitoring
+@app.get("/health")
+@app.head("/health")
+def health_check():
+    return {"status": "ok"}
+
+
 # Serve Frontend in Production/Render
 frontend_dist = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
 
