@@ -9,7 +9,7 @@ from app.core.config import settings
 from app.core.database import get_db
 
 # CryptContext using bcrypt with fallback or pbkdf2_sha256 if needed
-pwd_context = CryptContext(schemes=["pbkdf2_sha256", "bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
