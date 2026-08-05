@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: kiosco_db
+    restart: always
+    environment:
+      POSTGRES_USER: kiosco_user
+      POSTGRES_PASSWORD: kiosco_password
+      POSTGRES_DB: kioscodb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: kiosco_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://kiosco_user:kiosco_password@db:5432/kioscodb
+      SECRET_KEY: kiosco_secret_key_super_secure_jwt_2026_change_in_prod
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: kiosco_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
